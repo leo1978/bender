@@ -43,6 +43,10 @@ include_directories(
   )
 
 set(${KIT}_SRCS
+  vtkArmatureRepresentation.h
+  vtkArmatureRepresentation.cxx
+  vtkArmatureWidget.h
+  vtkArmatureWidget.cxx
   vtkBoneRepresentation.h
   vtkBoneRepresentation.cxx
   vtkBoneWidget.h
