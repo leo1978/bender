@@ -37,6 +37,7 @@ class vtkMRMLModelNode;
 // VTK includes
 class vtkPolyData;
 class vtkXMLDataElement;
+class vtkXMLDataParser;
 
 // STD includes
 #include <cstdlib>
@@ -50,19 +51,30 @@ public:
   vtkTypeMacro(vtkSlicerArmaturesLogic,vtkSlicerModuleLogic);
   void PrintSelf(ostream& os, vtkIndent indent);
 
-  vtkMRMLModelNode* AddArmatureFile(const char* fileName);
+  vtkMRMLModelNode* AddArmatureFile(const char* fileName, bool applyPose = true);
 
   virtual void SetModelsLogic(vtkSlicerModelsLogic* modelsLogic);
   vtkGetObjectMacro(ModelsLogic, vtkSlicerModelsLogic);
+
+  vtkGetMacro(LPS2RAS, double);
+  vtkSetMacro(LPS2RAS, double);
+
+  static void ComputeTransform(double start[3], double end[3], double mat[3][3]);
+  static double ComputeAngle(double v1[3], double v2[3]);
+  static void ComputeAxisAngleMatrix(double axis[3], double angle, double mat[3][3]);
 
 protected:
   vtkSlicerArmaturesLogic();
   virtual ~vtkSlicerArmaturesLogic();
 
-  void ReadBone(vtkXMLDataElement* boneElement, vtkPolyData* polyData,
+  void ReadArmature(vtkXMLDataParser* parser, vtkPolyData* polyData, bool applyPose, bool applyVertexGroup);
+  void ReadBone(vtkXMLDataElement* boneElement, vtkPolyData* polyData, bool applyPose, bool applyVertexGroup,
                 const double origin[3], const double parentMat[3][3], double parentLength = 0.);
   void ReadPose(vtkXMLDataElement* poseElement, double orientation[4], bool invert = true);
+
   vtkSlicerModelsLogic* ModelsLogic;
+  double LPS2RAS;
+
 private:
   vtkSlicerArmaturesLogic(const vtkSlicerArmaturesLogic&); // Not implemented
   void operator=(const vtkSlicerArmaturesLogic&);               // Not implemented

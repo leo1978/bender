@@ -24,6 +24,7 @@
 
 // SlicerQt includes
 #include "qSlicerArmaturesIO.h"
+#include "qSlicerArmaturesIOOptionsWidget.h"
 
 // Logic includes
 #include "vtkSlicerArmaturesLogic.h"
@@ -79,7 +80,7 @@ QString qSlicerArmaturesIO::description()const
 //-----------------------------------------------------------------------------
 qSlicerIO::IOFileType qSlicerArmaturesIO::fileType()const
 {
-  return qSlicerIO::ModelFile;
+  return "ArmatureFile";
 }
 
 //-----------------------------------------------------------------------------
@@ -87,6 +88,12 @@ QStringList qSlicerArmaturesIO::extensions()const
 {
   return QStringList()
     << "Armature (*.arm)";
+}
+
+//-----------------------------------------------------------------------------
+qSlicerIOOptions* qSlicerArmaturesIO::options()const
+{
+  return new qSlicerArmaturesIOOptionsWidget;
 }
 
 //-----------------------------------------------------------------------------
@@ -101,9 +108,14 @@ bool qSlicerArmaturesIO::load(const IOProperties& properties)
     {
     return false;
     }
-  qDebug() << d->ArmaturesLogic->GetMRMLScene() << d->ArmaturesLogic->GetModelsLogic() << d->ArmaturesLogic->GetModelsLogic()->GetMRMLScene();
+
+  bool applyPose = true;
+  if (properties.contains("applyPose"))
+    {
+    applyPose = properties["applyPose"].toBool();
+    }
   vtkMRMLModelNode* node = d->ArmaturesLogic->AddArmatureFile(
-    fileName.toLatin1());
+    fileName.toLatin1(), applyPose);
   if (!node)
     {
     return false;
