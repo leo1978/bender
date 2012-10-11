@@ -55,6 +55,8 @@ vtkPolyDataPointSampler::vtkPolyDataPointSampler()
   this->GenerateInteriorPoints = 1;
   
   this->GenerateVertices = 1;
+
+  this->CurrentCellId = -1;
 }
 
 //------------------------------------------------------------------------
@@ -194,7 +196,9 @@ int vtkPolyDataPointSampler::RequestData(vtkInformation *vtkNotUsed(request),
   if ( this->GenerateInteriorPoints && !abort )
     {
     // First the polygons
-    for ( inPolys->InitTraversal(); inPolys->GetNextCell(npts,pts); )
+    this->CurrentCellId = 0;
+    for ( inPolys->InitTraversal(); inPolys->GetNextCell(npts,pts);
+          ++this->CurrentCellId)
       {
       if ( npts == 3 )
         {
@@ -209,6 +213,8 @@ int vtkPolyDataPointSampler::RequestData(vtkInformation *vtkNotUsed(request),
     this->UpdateProgress (0.75);
     abort = this->GetAbortExecute();
 
+
+    this->CurrentCellId = 0;
     // Next the triangle strips
     for ( inStrips->InitTraversal(); 
           inStrips->GetNextCell(npts,pts) && !abort; )
@@ -222,6 +228,7 @@ int vtkPolyDataPointSampler::RequestData(vtkInformation *vtkNotUsed(request),
         this->SampleTriangle(output,inPts,stripPts);
         }
       }//for all strips
+    this->CurrentCellId = -1;
     }//for interior points
   
   this->UpdateProgress (0.90);

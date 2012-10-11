@@ -44,9 +44,12 @@ void vtkPolyDataPointIDSampler
 ::InitializeOutput(vtkPolyData *output, vtkPolyData* input)
 {
   this->Superclass::InitializeOutput(output, input);
-  vtkNew<vtkIdTypeArray> ids;
-  ids->SetName("pointIndexes");
-  output->GetPointData()->SetScalars(ids.GetPointer());
+  vtkNew<vtkIdTypeArray> pointIds;
+  pointIds->SetName("pointIndexes");
+  output->GetPointData()->AddArray(pointIds.GetPointer());
+  vtkNew<vtkIdTypeArray> pointCellIds;
+  pointCellIds->SetName("cellIndexes");
+  output->GetPointData()->AddArray(pointCellIds.GetPointer());
 }
 
 //------------------------------------------------------------------------
@@ -56,11 +59,14 @@ void vtkPolyDataPointIDSampler
                   double s, double t)
 {
   output->GetPoints()->InsertNextPoint(x);
-  vtkIdTypeArray* ids = vtkIdTypeArray::SafeDownCast(
+  vtkIdTypeArray* pointIds = vtkIdTypeArray::SafeDownCast(
     output->GetPointData()->GetScalars("pointIndexes"));
   vtkIdType closestpointId = s >  0.5 ? (t > 0.5 ? pts[2] : pts[1]) :
                              (t > 0.5 ? pts[ (npts > 3 ? 3 : 2)] : pts[0]);
-  ids->InsertNextValue(closestpointId);
+  pointIds->InsertNextValue(closestpointId);
+  vtkIdTypeArray* pointCellIds = vtkIdTypeArray::SafeDownCast(
+    output->GetPointData()->GetScalars("cellIndexes"));
+  pointCellIds->InsertNextValue(this->CurrentCellId);
 }
 
 //------------------------------------------------------------------------

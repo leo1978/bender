@@ -123,6 +123,8 @@ protected:
   int GenerateInteriorPoints;
   int GenerateVertices;
 
+  vtkIdType CurrentCellId;
+
   virtual void InitializeOutput(vtkPolyData* output, vtkPolyData* input);
   void SampleEdge(vtkPolyData* output, vtkPoints *inPts, 
                   vtkIdType *pts);
