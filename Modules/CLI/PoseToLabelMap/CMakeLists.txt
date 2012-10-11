@@ -10,7 +10,19 @@ SEMMacroBuildCLI(
                   vtkPolyDataPointIDSampler.h
                   vtkPolyDataPointSampler.cxx
                   vtkPolyDataPointSampler.h
-  TARGET_LIBRARIES ${ITK_LIBRARIES} vtkIO vtkGraphics ${ITK_LIBRARIES}
+  INCLUDE_DIRECTORIES ${vtkSlicerArmaturesModuleLogic_SOURCE_DIR}
+                      ${vtkSlicerArmaturesModuleLogic_BINARY_DIR}
+                      ${vtkSlicerModelsModuleLogic_SOURCE_DIR}
+                      ${vtkSlicerModelsModuleLogic_BINARY_DIR}
+                      ${SlicerBaseLogic_SOURCE_DIR}
+                      ${SlicerBaseLogic_BINARY_DIR}
+                      ${MRMLCore_SOURCE_DIR}
+                      ${MRMLCore_BINARY_DIR}
+                      ${MRMLLogic_SOURCE_DIR}
+                      ${MRMLLogic_BINARY_DIR}
+  TARGET_LIBRARIES ${ITK_LIBRARIES} vtkIO vtkGraphics
+                   vtkSlicerArmaturesModuleLogic
+                   vtkSlicerModelsModuleLogic
   )
 
 #-----------------------------------------------------------------------------
