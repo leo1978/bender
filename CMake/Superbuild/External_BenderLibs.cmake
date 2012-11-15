@@ -46,7 +46,7 @@ get_filename_component(proj_filename ${CMAKE_CURRENT_LIST_FILE} NAME_WE)
 set(proj ${${proj_filename}_proj})
 
 if(NOT DEFINED ${proj}_DIR)
-  #message(STATUS "${__indent}Adding project ${proj}")
+  message(STATUS "${__indent}Adding project ${proj}")
 
   # Set CMake OSX variable to pass down the external project
   set(CMAKE_OSX_EXTERNAL_PROJECT_ARGS)
@@ -61,10 +61,10 @@ if(NOT DEFINED ${proj}_DIR)
   ExternalProject_Add(${proj}
     SOURCE_DIR ${Bender_SOURCE_DIR}
     BINARY_DIR ${${proj}_DIR}
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
     DOWNLOAD_COMMAND ""
     CMAKE_GENERATOR ${gen}
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
     CMAKE_ARGS
       ${ctk_superbuild_boolean_args}
       ${CMAKE_OSX_EXTERNAL_PROJECT_ARGS}
@@ -99,5 +99,5 @@ else()
   benderMacroEmptyExternalProject(${proj} "${${proj}_DEPENDENCIES}")
 endif()
 
-list(APPEND Bender_SUPERBUILD_EP_ARGS -D${proj}_DIR:PATH=${${proj}_DIR})
+#list(APPEND Bender_SUPERBUILD_EP_ARGS -D${proj}_DIR:PATH=${${proj}_DIR})
 

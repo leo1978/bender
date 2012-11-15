@@ -63,8 +63,8 @@ if(NOT DEFINED ${proj}_DIR)
     SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj}
     BINARY_DIR ${${proj}_DIR}
     PREFIX ${proj}${ep_suffix}
-    GIT_REPOSITORY "${git_protocol}://github.com/Slicer/Slicer.git"
-    GIT_TAG "f732a19e5b80d7fc8fb8b304f0e2a6162ceb9f92"
+    GIT_REPOSITORY "/Users/exxos/Work/Slicer/Slicer4/Slicer"
+    GIT_TAG "62268e4e385ff3c14b7bb8b931bae8701b955507"
     UPDATE_COMMAND ""
     INSTALL_COMMAND ""
     CMAKE_GENERATOR ${gen}
@@ -78,11 +78,37 @@ if(NOT DEFINED ${proj}_DIR)
       -DADDITIONAL_CXX_FLAGS:STRING=${ADDITIONAL_CXX_FLAGS}
       -DBUILD_TESTING:BOOL=OFF
       -D${proj}_INSTALL_BIN_DIR:STRING=${BENDER_INSTALL_BIN_DIR}
-      -D${proj_NAME}_INSTALL_LIB_DIR:STRING=${BENDER_INSTALL_BIN_DIR}
+      -D${proj}_INSTALL_LIB_DIR:STRING=${BENDER_INSTALL_BIN_DIR}
       -DGIT_EXECUTABLE:FILEPATH=${GIT_EXECUTABLE}
-      -D${proj_NAME}_USE_GIT_PROTOCOL:BOOL=${BENDER_USE_GIT_PROTOCOL}
+      -D${proj}_USE_GIT_PROTOCOL:BOOL=${BENDER_USE_GIT_PROTOCOL}
       -DQT_QMAKE_EXECUTABLE:FILEPATH=${QT_QMAKE_EXECUTABLE}
       -DSlicer_REQUIRED_QT_VERSION:STRING=${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}
+      -DSlicer_MAIN_PROJECT:STRING=BenderApp
+      -DBenderApp_APPLICATION_NAME:STRING=Bender
+      -DSlicer_APPLICATIONS_DIR:PATH=${Bender_SOURCE_DIR}/Applications
+#      -DBender_VERSION_MAJOR:STRING=${Bender_VERSION_MAJOR}
+#      -DBender_VERSION_MINOR:STRING=${Bender_VERSION_MINOR}
+#      -DBender_VERSION_PATCH:STRING=${Bender_VERSION_PATCH}
+#      -DBender_VERSION_TWEAK:STRING=${Bender_VERSION_TWEAK}
+#      -DBender_VERSION_RC:STRING=${Bender_VERSION_RC}
+      -DSlicer_ADDITIONAL_PROJECTS:STRING=Bender
+      -DBender_DIR:PATH=${Bender_BINARY_DIR}/Bender-build
+      -DSlicer_BUILD_DICOM_SUPPORT:BOOL=OFF
+      -DSlicer_BUILD_DIFFUSION_SUPPORT:BOOL=OFF
+      -DSlicer_BUILD_EXTENSIONMANAGER_SUPPORT:BOOL=OFF
+      -DSlicer_USE_QtTesting:BOOL=OFF
+      -DSlicer_USE_PYTHONQT:BOOL=ON
+      -DSlicer_QTLOADABLEMODULES_DISABLED:STRING=SlicerWelcome
+      -DSlicer_BUILD_ChangeTrackerPy:BOOL=OFF
+      -DSlicer_BUILD_MultiVolumeExplorer:BOOL=OFF
+      -DSlicer_BUILD_MultiVolumeImporter:BOOL=OFF
+      -DSlicer_BUILD_EMSegment:BOOL=OFF
+      -DSlicer_BUILD_SkullStripper:BOOL=OFF
+      -DSlicer_BUILD_SlicerWebGLExport:BOOL=OFF
+      -DSlicer_USE_OpenIGTLink:BOOL=OFF
+      -DSlicer_BUILD_OpenIGTLinkIF:BOOL=OFF
+      -DSlicer_BUILD_BRAINSTOOLS:BOOL=OFF
+      -DSlicer_BUILD_Extensions:BOOL=OFF
       -DSlicer_EXTENSION_SOURCE_DIRS:STRING=${Bender_SOURCE_DIR}/Modules/Loadable/Armatures
     INSTALL_COMMAND ""
     DEPENDS
@@ -95,5 +121,5 @@ else()
   #benderMacroEmptyExternalProject(${proj} "${${proj}_DEPENDENCIES}")
 endif()
 
-list(APPEND Bender_SUPERBUILD_EP_ARGS -${proj}_DIR:PATH=${${proj}_DIR})
+#list(APPEND Bender_SUPERBUILD_EP_ARGS -${proj}_DIR:PATH=${${proj}_DIR})
 

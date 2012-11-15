@@ -79,8 +79,6 @@ set(sep "^^")
 # where '<EP>' is an external project name.
 set(Bender_SUPERBUILD_EP_ARGS)
 
-benderMacroCheckExternalProjectDependency(Bender)
-
 #-----------------------------------------------------------------------------
 # Makes sure ${Bender_BINARY_DIR}/Bender-build/bin exists
 IF(NOT EXISTS ${Bender_BINARY_DIR}/Bender-build/bin)
@@ -110,6 +108,8 @@ if(APPLE)
     -DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
     -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET})
 endif()
+
+benderMacroCheckExternalProjectDependency(Bender)
 
 #-----------------------------------------------------------------------------
 # Bender Configure
@@ -142,7 +142,7 @@ add_dependencies(Bender-build ${proj})
 #-----------------------------------------------------------------------------
 # Custom target allowing to drive the build of Bender project itself
 #
-add_custom_target(Bender
-  COMMAND ${bender_build_cmd}
-  WORKING_DIRECTORY ${Bender_BINARY_DIR}/${proj}-build
-  )
+#add_custom_target(Bender
+#  COMMAND ${bender_build_cmd}
+#  WORKING_DIRECTORY ${Bender_BINARY_DIR}/${proj}-build
+#  )

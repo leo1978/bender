@@ -21,6 +21,20 @@
 cmake_minimum_required(VERSION 2.8.2)
 
 set(kit Bender)
+
+#-----------------------------------------------------------------------------
+# Update CMake module path
+# Note: FindXXX.cmake script specific to utility should be copied into Utilities/CMake
+#
+set(${kit}_CMAKE_DIR "${${kit}_SOURCE_DIR}/CMake")
+set(CMAKE_MODULE_PATH  ${${kit}_CMAKE_DIR} ${CMAKE_MODULE_PATH})
+
+#-----------------------------------------------------------------------------
+# Must be called before "project"
+include(benderOSXVariables)
+
+#-----------------------------------------------------------------------------
+#
 project(${kit})
 
 #-----------------------------------------------------------------------------
@@ -66,14 +80,6 @@ set(${kit}_VERSION
     "${${kit}_VERSION_MAJOR}.${${kit}_VERSION_MINOR}.${${kit}_VERSION_PATCH}")
 
 #-----------------------------------------------------------------------------
-# Update CMake module path
-# Note: FindXXX.cmake script specific to utility should be copied into Utilities/CMake
-#
-set(CMAKE_MODULE_PATH
-  "${CMAKE_CURRENT_SOURCE_DIR}/CMake"
-  ${CMAKE_MODULE_PATH})
-
-#-----------------------------------------------------------------------------
 # Prerequisites
 #-----------------------------------------------------------------------------
 find_package(Git)
@@ -89,4 +95,30 @@ if(${kit}_SUPERBUILD)
   add_subdirectory("CMake/SuperBuild")
   return()
 endif()
+
+# --------------------------------------------------------------------------
+# Configure and install headers
+# --------------------------------------------------------------------------
+set(${kit}_INCLUDE_DIRS)
+
+configure_file(
+  ${${kit}_CMAKE_DIR}/benderVersionConfigure.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/benderVersionConfigure.h
+  )
+list(APPEND ${kit}_INCLUDE_DIRS
+  ${CMAKE_CURRENT_BINARY_DIR}
+  )
+
+# --------------------------------------------------------------------------
+# Sub projects
+# --------------------------------------------------------------------------
+
+
+# --------------------------------------------------------------------------
+# Install project
+# --------------------------------------------------------------------------
+configure_file(
+  ${${kit}_CMAKE_DIR}/${kit}Config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/${kit}Config.cmake
+  )
 
